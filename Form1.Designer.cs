@@ -35,6 +35,8 @@ namespace MelodyImpact
             this.btnBrowse = new System.Windows.Forms.Button();
             this.btnParse = new System.Windows.Forms.Button();
             this.rtbParse = new System.Windows.Forms.RichTextBox();
+            this.tbSpeed = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // tbFile
@@ -44,7 +46,7 @@ namespace MelodyImpact
             this.tbFile.Location = new System.Drawing.Point(12, 14);
             this.tbFile.Name = "tbFile";
             this.tbFile.ReadOnly = true;
-            this.tbFile.Size = new System.Drawing.Size(254, 20);
+            this.tbFile.Size = new System.Drawing.Size(371, 20);
             this.tbFile.TabIndex = 0;
             // 
             // contextMenuStrip1
@@ -55,7 +57,7 @@ namespace MelodyImpact
             // btnBrowse
             // 
             this.btnBrowse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnBrowse.Location = new System.Drawing.Point(272, 12);
+            this.btnBrowse.Location = new System.Drawing.Point(389, 12);
             this.btnBrowse.Name = "btnBrowse";
             this.btnBrowse.Size = new System.Drawing.Size(75, 23);
             this.btnBrowse.TabIndex = 2;
@@ -67,9 +69,9 @@ namespace MelodyImpact
             // 
             this.btnParse.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnParse.Location = new System.Drawing.Point(12, 40);
+            this.btnParse.Location = new System.Drawing.Point(174, 40);
             this.btnParse.Name = "btnParse";
-            this.btnParse.Size = new System.Drawing.Size(335, 23);
+            this.btnParse.Size = new System.Drawing.Size(290, 23);
             this.btnParse.TabIndex = 3;
             this.btnParse.Text = "Parse";
             this.btnParse.UseVisualStyleBackColor = true;
@@ -82,15 +84,34 @@ namespace MelodyImpact
             | System.Windows.Forms.AnchorStyles.Right)));
             this.rtbParse.Location = new System.Drawing.Point(12, 69);
             this.rtbParse.Name = "rtbParse";
-            this.rtbParse.Size = new System.Drawing.Size(341, 266);
+            this.rtbParse.Size = new System.Drawing.Size(458, 351);
             this.rtbParse.TabIndex = 4;
             this.rtbParse.Text = "";
+            // 
+            // tbSpeed
+            // 
+            this.tbSpeed.Location = new System.Drawing.Point(47, 42);
+            this.tbSpeed.Name = "tbSpeed";
+            this.tbSpeed.Size = new System.Drawing.Size(121, 20);
+            this.tbSpeed.TabIndex = 5;
+            this.tbSpeed.Text = "20";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(12, 45);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(29, 13);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "Step";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(365, 347);
+            this.ClientSize = new System.Drawing.Size(482, 432);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.tbSpeed);
             this.Controls.Add(this.rtbParse);
             this.Controls.Add(this.btnParse);
             this.Controls.Add(this.btnBrowse);
@@ -110,6 +131,8 @@ namespace MelodyImpact
         private System.Windows.Forms.Button btnBrowse;
         private System.Windows.Forms.Button btnParse;
         private System.Windows.Forms.RichTextBox rtbParse;
+        private System.Windows.Forms.TextBox tbSpeed;
+        private System.Windows.Forms.Label label1;
     }
 }
 

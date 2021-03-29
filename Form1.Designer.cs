@@ -30,6 +30,7 @@ namespace MelodyImpact
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.tbFile = new System.Windows.Forms.TextBox();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.btnBrowse = new System.Windows.Forms.Button();
@@ -51,7 +52,7 @@ namespace MelodyImpact
             this.tbFile.Location = new System.Drawing.Point(12, 14);
             this.tbFile.Name = "tbFile";
             this.tbFile.ReadOnly = true;
-            this.tbFile.Size = new System.Drawing.Size(367, 20);
+            this.tbFile.Size = new System.Drawing.Size(224, 20);
             this.tbFile.TabIndex = 0;
             // 
             // contextMenuStrip1
@@ -62,7 +63,7 @@ namespace MelodyImpact
             // btnBrowse
             // 
             this.btnBrowse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnBrowse.Location = new System.Drawing.Point(385, 12);
+            this.btnBrowse.Location = new System.Drawing.Point(242, 12);
             this.btnBrowse.Name = "btnBrowse";
             this.btnBrowse.Size = new System.Drawing.Size(75, 23);
             this.btnBrowse.TabIndex = 1;
@@ -76,7 +77,7 @@ namespace MelodyImpact
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnPlay.Location = new System.Drawing.Point(174, 40);
             this.btnPlay.Name = "btnPlay";
-            this.btnPlay.Size = new System.Drawing.Size(286, 74);
+            this.btnPlay.Size = new System.Drawing.Size(143, 74);
             this.btnPlay.TabIndex = 5;
             this.btnPlay.Text = "Play";
             this.btnPlay.UseVisualStyleBackColor = true;
@@ -87,10 +88,11 @@ namespace MelodyImpact
             this.rtbParse.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.rtbParse.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rtbParse.Location = new System.Drawing.Point(12, 120);
             this.rtbParse.Name = "rtbParse";
             this.rtbParse.ReadOnly = true;
-            this.rtbParse.Size = new System.Drawing.Size(454, 299);
+            this.rtbParse.Size = new System.Drawing.Size(311, 106);
             this.rtbParse.TabIndex = 6;
             this.rtbParse.Text = "";
             // 
@@ -163,7 +165,7 @@ namespace MelodyImpact
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(478, 431);
+            this.ClientSize = new System.Drawing.Size(335, 238);
             this.Controls.Add(this.cbAllTrack);
             this.Controls.Add(this.tbTrack);
             this.Controls.Add(this.label3);
@@ -175,6 +177,7 @@ namespace MelodyImpact
             this.Controls.Add(this.btnPlay);
             this.Controls.Add(this.btnBrowse);
             this.Controls.Add(this.tbFile);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Melody Impact";

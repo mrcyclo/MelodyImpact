@@ -17,8 +17,6 @@ namespace MelodyImpact
         public Form1()
         {
             InitializeComponent();
-
-            tbFile.Text = @"C:\Users\mrcyclo\Downloads\Westlife_-_Beautiful_in_White.mid";
         }
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
@@ -96,79 +94,89 @@ namespace MelodyImpact
             int.TryParse(tbOffset.Text, out noteOffset);
 
             int trackIndex = 0;
-            int.TryParse(tbTrack.Text, out trackIndex);
-            if (trackIndex < 0) return;
+            bool allTracks = cbAllTrack.Checked;
+            if (!allTracks)
+            {
+                int.TryParse(tbTrack.Text, out trackIndex);
+                if (trackIndex < 0) return;
+            }
 
             MidiFile midi = new MidiFile(tbFile.Text);
-            if (trackIndex >= midi.TracksCount) return;
-
-            MidiTrack track = midi.Tracks[trackIndex];
+            if (trackIndex >= midi.TracksCount && !allTracks) return;
 
             btnPlay.Enabled = false;
-            await Task.Run(async () =>
-            {
-                SetForegroundWindow(handle);
-                await Task.Delay(100);
-
-                int currentTick = 0;
-                int currentEventIndex = 0;
-                while (currentEventIndex < track.MidiEvents.Count)
-                {
-                    if (handle != GetForegroundWindow()) return;
-
-                    List<MidiEvent> currentTickEvents = new List<MidiEvent>();
-                    while (true)
-                    {
-                        if (currentEventIndex >= track.MidiEvents.Count) break;
-
-                        MidiEvent evt = track.MidiEvents[currentEventIndex];
-                        if (evt.Time == currentTick && evt.MidiEventType == MidiEventType.NoteOn)
-                        {
-                            currentTickEvents.Add(evt);
-                        }
-                        else if (evt.Time > currentTick)
-                        {
-                            break;
-                        }
-                        currentEventIndex++;
-                    }
-
-                    foreach (MidiEvent evt in currentTickEvents)
-                    {
-                        MidiNote note = new MidiNote(evt.Note);
-                        SendNote(note);
-                    }
-
-                    await Task.Delay(10);
-                    currentTick += stepTick;
-                }
-            });
+            await PlayMelody(midi, handle, stepTick, allTracks, trackIndex, noteOffset);
             btnPlay.Enabled = true;
-        }
-
-        private void SendNote(MidiNote note)
-        {
-            string[] keys = new string[] {
-                "z", "z", "x", "x", "c", "v", "v", "b", "b", "n", "n", "m",
-                "a", "a", "s", "s", "d", "f", "f", "g", "g", "h", "h", "j",
-                "q", "q", "w", "w", "e", "r", "r", "t", "t", "y", "y", "u"
-            };
-
-            int keyIndex = note.NoteNumber - 48;
-            if (keyIndex < 0 || keyIndex >= keys.Length) return;
-
-            Invoke(new Action(() =>
-            {
-                rtbParse.AppendText(note.NoteName + " - " + keys[keyIndex] + "\n");
-                rtbParse.ScrollToCaret();
-            }));
-
-            SendKeys.SendWait(keys[keyIndex]);
         }
 
         private void cbAllTrack_CheckedChanged(object sender, EventArgs e)
         {
             tbTrack.Enabled = !cbAllTrack.Checked;
+        }
+
+        private async Task PlayMelody(MidiFile midi, IntPtr handle, int stepTick, bool allTracks, int trackIndex, int noteOffset)
+        {
+            SetForegroundWindow(handle);
+            await Task.Delay(100);
+
+            int currentTick = 0;
+            int[] eventIdxs = new int[midi.TracksCount];
+
+            while (true)
+            {
+                if (handle != GetForegroundWindow()) return;
+
+                Stopwatch watch = Stopwatch.StartNew();
+
+                List<MidiNote> notes = new List<MidiNote>();
+                foreach (MidiTrack track in midi.Tracks)
+                {
+                    if (!allTracks && track.Index != trackIndex) continue;
+
+                    while (true)
+                    {
+                        if (eventIdxs[track.Index] >= track.MidiEvents.Count) break;
+
+                        MidiEvent evt = track.MidiEvents[eventIdxs[track.Index]];
+                        if (evt.Time == currentTick && evt.MidiEventType == MidiEventType.NoteOn)
+                        {
+                            notes.Add(new MidiNote(evt.Note + noteOffset));
+                        }
+                        else if (evt.Time > currentTick)
+                        {
+                            break;
+                        }
+                        eventIdxs[track.Index]++;
+                    }
+                }
+
+                string keys = string.Join("", notes.Select(x => x.GenshinKey));
+                if (!string.IsNullOrEmpty(keys))
+                {
+                    Task.Run(() => SendKeys.SendWait(keys));
+                }
+
+                watch.Stop();
+
+                if (!string.IsNullOrEmpty(keys))
+                {
+                    Invoke(new Action(() =>
+                    {
+                        rtbParse.AppendText(
+                            string.Join(" ", notes.Select(x => x.NoteName)).PadLeft(20) +
+                            " | " +
+                            keys.PadLeft(8) +
+                            " | " +
+                            (watch.ElapsedMilliseconds + "ms").PadLeft(5) +
+                            "\n"
+                        );
+                        rtbParse.ScrollToCaret();
+                    }));
+                }
+
+                await Task.Delay(Math.Max(10 - (int)watch.ElapsedMilliseconds, 0));
+                currentTick += stepTick;
+            }
         }
     }
 }

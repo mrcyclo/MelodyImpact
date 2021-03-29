@@ -9,6 +9,8 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WindowsInput;
+using WindowsInput.Native;
 
 namespace MelodyImpact
 {
@@ -75,6 +77,8 @@ namespace MelodyImpact
                 int currentTick = 0;
                 int[] eventIdxs = new int[midi.TracksCount];
 
+                InputSimulator sim = new InputSimulator();
+
                 int ticksPerQuarterNote = midi.TicksPerQuarterNote;
                 while (eventIdxs.Max() != -1)
                 {
@@ -112,29 +116,29 @@ namespace MelodyImpact
                         }
                     }
 
-                    string keys = string.Join("", notes.Select(x => x.GenshinKey));
-                    if (!string.IsNullOrEmpty(keys))
+                    List<VirtualKeyCode> keyCodes = new List<VirtualKeyCode>();
+                    foreach (MidiNote note in notes)
                     {
-                        try
-                        {
-                            Task.Run(() => SendKeys.SendWait(keys));
-                        }
-                        catch (Exception)
-                        {
-                            // nothing
-                        }
+                        if (note.GenshinKey == null) continue;
+                        Enum.TryParse("VK_" + note.GenshinKey.ToUpper(), out VirtualKeyCode keyCode);
+                        if (keyCode <= 0) continue;
+                        keyCodes.Add(keyCode);
+                    }
+                    if (keyCodes.Count > 0)
+                    {
+                        sim.Keyboard.KeyPress(keyCodes.ToArray());
                     }
 
                     watch.Stop();
 
-                    if (!string.IsNullOrEmpty(keys))
+                    if (notes.Count > 0)
                     {
                         Invoke(new Action(() =>
                         {
                             rtbParse.AppendText(
                                 string.Join(" ", notes.Select(x => x.NoteName)).PadLeft(20) +
                                 " | " +
-                                keys.PadLeft(8) +
+                                string.Join("", notes.Select(x => x.GenshinKey)).PadLeft(8) +
                                 " | " +
                                 (watch.ElapsedMilliseconds + "ms").PadLeft(5) +
                                 "\n"

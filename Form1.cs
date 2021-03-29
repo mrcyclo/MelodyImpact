@@ -78,7 +78,7 @@ namespace MelodyImpact
                 int ticksPerQuarterNote = midi.TicksPerQuarterNote;
                 while (eventIdxs.Max() != -1)
                 {
-                    //if (handle != GetForegroundWindow()) return;
+                    if (handle != GetForegroundWindow()) return;
 
                     Stopwatch watch = Stopwatch.StartNew();
 
@@ -117,7 +117,7 @@ namespace MelodyImpact
                     {
                         try
                         {
-                            //Task.Run(() => SendKeys.SendWait(keys));
+                            Task.Run(() => SendKeys.SendWait(keys));
                         }
                         catch (Exception)
                         {

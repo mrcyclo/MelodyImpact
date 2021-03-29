@@ -43,6 +43,8 @@ namespace MelodyImpact
             this.label3 = new System.Windows.Forms.Label();
             this.tbTrack = new System.Windows.Forms.TextBox();
             this.cbAllTrack = new System.Windows.Forms.CheckBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.tbStartAt = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // tbFile
@@ -77,7 +79,7 @@ namespace MelodyImpact
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnPlay.Location = new System.Drawing.Point(174, 40);
             this.btnPlay.Name = "btnPlay";
-            this.btnPlay.Size = new System.Drawing.Size(149, 74);
+            this.btnPlay.Size = new System.Drawing.Size(149, 99);
             this.btnPlay.TabIndex = 5;
             this.btnPlay.Text = "Play";
             this.btnPlay.UseVisualStyleBackColor = true;
@@ -89,10 +91,10 @@ namespace MelodyImpact
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.rtbParse.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rtbParse.Location = new System.Drawing.Point(12, 120);
+            this.rtbParse.Location = new System.Drawing.Point(12, 145);
             this.rtbParse.Name = "rtbParse";
             this.rtbParse.ReadOnly = true;
-            this.rtbParse.Size = new System.Drawing.Size(311, 106);
+            this.rtbParse.Size = new System.Drawing.Size(311, 81);
             this.rtbParse.TabIndex = 6;
             this.rtbParse.Text = "";
             // 
@@ -161,11 +163,30 @@ namespace MelodyImpact
             this.cbAllTrack.UseVisualStyleBackColor = true;
             this.cbAllTrack.CheckedChanged += new System.EventHandler(this.cbAllTrack_CheckedChanged);
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(14, 123);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(42, 13);
+            this.label4.TabIndex = 12;
+            this.label4.Text = "Start At";
+            // 
+            // tbStartAt
+            // 
+            this.tbStartAt.Location = new System.Drawing.Point(62, 120);
+            this.tbStartAt.Name = "tbStartAt";
+            this.tbStartAt.Size = new System.Drawing.Size(106, 20);
+            this.tbStartAt.TabIndex = 13;
+            this.tbStartAt.Text = "0";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(335, 238);
+            this.Controls.Add(this.tbStartAt);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.cbAllTrack);
             this.Controls.Add(this.tbTrack);
             this.Controls.Add(this.label3);
@@ -201,6 +222,8 @@ namespace MelodyImpact
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox tbTrack;
         private System.Windows.Forms.CheckBox cbAllTrack;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox tbStartAt;
     }
 }
 

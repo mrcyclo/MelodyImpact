@@ -68,18 +68,29 @@ namespace MelodyImpact
             MidiFile midi = new MidiFile(tbFile.Text);
             if (trackIndex >= midi.TracksCount && !allTracks) return;
 
+            int startAt = 0;
+            int.TryParse(tbStartAt.Text, out startAt);
+
+            if (startAt > 0)
+            {
+                foreach (MidiTrack track in midi.Tracks)
+                {
+                    track.MidiEvents.RemoveAll(x => x.Time < startAt);
+                }
+            }
+
             btnPlay.Enabled = false;
             await Task.Run(async () =>
             {
                 SetForegroundWindow(handle);
                 await Task.Delay(100);
 
-                int currentTick = 0;
+                int currentTick = startAt;
+                int stepTick = midi.TicksPerQuarterNote / 4;
                 int[] eventIdxs = new int[midi.TracksCount];
 
                 InputSimulator sim = new InputSimulator();
 
-                int ticksPerQuarterNote = midi.TicksPerQuarterNote;
                 while (eventIdxs.Max() != -1)
                 {
                     if (handle != GetForegroundWindow()) return;
@@ -104,11 +115,11 @@ namespace MelodyImpact
                             }
 
                             MidiEvent evt = track.MidiEvents[eventIdxs[track.Index]];
-                            if (evt.Time == currentTick && evt.MidiEventType == MidiEventType.NoteOn)
+                            if (evt.Time >= currentTick && evt.Time < currentTick + stepTick && evt.MidiEventType == MidiEventType.NoteOn)
                             {
                                 notes.Add(new MidiNote(evt.Note + noteOffset));
                             }
-                            else if (evt.Time > currentTick)
+                            else if (evt.Time >= currentTick + stepTick)
                             {
                                 break;
                             }
@@ -148,7 +159,7 @@ namespace MelodyImpact
                     }
 
                     await Task.Delay(Math.Max(delay - (int)watch.ElapsedMilliseconds, 0));
-                    currentTick += ticksPerQuarterNote / 4;
+                    currentTick += stepTick;
                 }
             });
             btnPlay.Enabled = true;

@@ -36,7 +36,7 @@ namespace MelodyImpact
             this.btnBrowse = new System.Windows.Forms.Button();
             this.btnPlay = new System.Windows.Forms.Button();
             this.rtbParse = new System.Windows.Forms.RichTextBox();
-            this.tbSpeed = new System.Windows.Forms.TextBox();
+            this.tbDelay = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.tbOffset = new System.Windows.Forms.TextBox();
@@ -65,7 +65,7 @@ namespace MelodyImpact
             this.btnBrowse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnBrowse.Location = new System.Drawing.Point(242, 12);
             this.btnBrowse.Name = "btnBrowse";
-            this.btnBrowse.Size = new System.Drawing.Size(75, 23);
+            this.btnBrowse.Size = new System.Drawing.Size(81, 23);
             this.btnBrowse.TabIndex = 1;
             this.btnBrowse.Text = "Browse";
             this.btnBrowse.UseVisualStyleBackColor = true;
@@ -77,7 +77,7 @@ namespace MelodyImpact
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnPlay.Location = new System.Drawing.Point(174, 40);
             this.btnPlay.Name = "btnPlay";
-            this.btnPlay.Size = new System.Drawing.Size(143, 74);
+            this.btnPlay.Size = new System.Drawing.Size(149, 74);
             this.btnPlay.TabIndex = 5;
             this.btnPlay.Text = "Play";
             this.btnPlay.UseVisualStyleBackColor = true;
@@ -96,22 +96,22 @@ namespace MelodyImpact
             this.rtbParse.TabIndex = 6;
             this.rtbParse.Text = "";
             // 
-            // tbSpeed
+            // tbDelay
             // 
-            this.tbSpeed.Location = new System.Drawing.Point(62, 42);
-            this.tbSpeed.Name = "tbSpeed";
-            this.tbSpeed.Size = new System.Drawing.Size(106, 20);
-            this.tbSpeed.TabIndex = 2;
-            this.tbSpeed.Text = "20";
+            this.tbDelay.Location = new System.Drawing.Point(62, 42);
+            this.tbDelay.Name = "tbDelay";
+            this.tbDelay.Size = new System.Drawing.Size(106, 20);
+            this.tbDelay.TabIndex = 2;
+            this.tbDelay.Text = "200";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(12, 45);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(38, 13);
+            this.label1.Size = new System.Drawing.Size(34, 13);
             this.label1.TabIndex = 6;
-            this.label1.Text = "Speed";
+            this.label1.Text = "Delay";
             // 
             // label2
             // 
@@ -172,7 +172,7 @@ namespace MelodyImpact
             this.Controls.Add(this.tbOffset);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.tbSpeed);
+            this.Controls.Add(this.tbDelay);
             this.Controls.Add(this.rtbParse);
             this.Controls.Add(this.btnPlay);
             this.Controls.Add(this.btnBrowse);
@@ -194,7 +194,7 @@ namespace MelodyImpact
         private System.Windows.Forms.Button btnBrowse;
         private System.Windows.Forms.Button btnPlay;
         private System.Windows.Forms.RichTextBox rtbParse;
-        private System.Windows.Forms.TextBox tbSpeed;
+        private System.Windows.Forms.TextBox tbDelay;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox tbOffset;

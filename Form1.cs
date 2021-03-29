@@ -46,9 +46,9 @@ namespace MelodyImpact
 
             IntPtr handle = process.MainWindowHandle;
 
-            int stepTick = 0;
-            int.TryParse(tbSpeed.Text, out stepTick);
-            if (stepTick == 0) return;
+            int delay = 0;
+            int.TryParse(tbDelay.Text, out delay);
+            if (delay <= 0) return;
 
             int noteOffset = 0;
             int.TryParse(tbOffset.Text, out noteOffset);
@@ -61,11 +61,13 @@ namespace MelodyImpact
                 if (trackIndex < 0) return;
             }
 
+            if (string.IsNullOrEmpty(tbFile.Text)) return;
+
             MidiFile midi = new MidiFile(tbFile.Text);
             if (trackIndex >= midi.TracksCount && !allTracks) return;
 
             btnPlay.Enabled = false;
-            await PlayMelody(midi, handle, stepTick, allTracks, trackIndex, noteOffset);
+            await PlayMelody(midi, handle, delay, allTracks, trackIndex, noteOffset);
             btnPlay.Enabled = true;
         }
 
@@ -74,7 +76,7 @@ namespace MelodyImpact
             tbTrack.Enabled = !cbAllTrack.Checked;
         }
 
-        private async Task PlayMelody(MidiFile midi, IntPtr handle, int stepTick, bool allTracks, int trackIndex, int noteOffset)
+        private async Task PlayMelody(MidiFile midi, IntPtr handle, int delay, bool allTracks, int trackIndex, int noteOffset)
         {
             SetForegroundWindow(handle);
             await Task.Delay(100);
@@ -82,6 +84,7 @@ namespace MelodyImpact
             int currentTick = 0;
             int[] eventIdxs = new int[midi.TracksCount];
 
+            int ticksPerQuarterNote = midi.TicksPerQuarterNote;
             while (true)
             {
                 if (handle != GetForegroundWindow()) return;
@@ -113,7 +116,14 @@ namespace MelodyImpact
                 string keys = string.Join("", notes.Select(x => x.GenshinKey));
                 if (!string.IsNullOrEmpty(keys))
                 {
-                    Task.Run(() => SendKeys.SendWait(keys));
+                    try
+                    {
+                        Task.Run(() => SendKeys.SendWait(keys));
+                    }
+                    catch (Exception)
+                    {
+                        // nothing
+                    }
                 }
 
                 watch.Stop();
@@ -134,8 +144,8 @@ namespace MelodyImpact
                     }));
                 }
 
-                await Task.Delay(Math.Max(10 - (int)watch.ElapsedMilliseconds, 0));
-                currentTick += stepTick;
+                await Task.Delay(Math.Max(delay - (int)watch.ElapsedMilliseconds, 0));
+                currentTick += ticksPerQuarterNote / 4;
             }
         }
     }

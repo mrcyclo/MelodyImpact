@@ -33,10 +33,15 @@ namespace MelodyImpact
             this.tbFile = new System.Windows.Forms.TextBox();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.btnBrowse = new System.Windows.Forms.Button();
-            this.btnParse = new System.Windows.Forms.Button();
+            this.btnPlay = new System.Windows.Forms.Button();
             this.rtbParse = new System.Windows.Forms.RichTextBox();
             this.tbSpeed = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.tbOffset = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.tbTrack = new System.Windows.Forms.TextBox();
+            this.cbAllTrack = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // tbFile
@@ -46,7 +51,7 @@ namespace MelodyImpact
             this.tbFile.Location = new System.Drawing.Point(12, 14);
             this.tbFile.Name = "tbFile";
             this.tbFile.ReadOnly = true;
-            this.tbFile.Size = new System.Drawing.Size(371, 20);
+            this.tbFile.Size = new System.Drawing.Size(367, 20);
             this.tbFile.TabIndex = 0;
             // 
             // contextMenuStrip1
@@ -57,43 +62,44 @@ namespace MelodyImpact
             // btnBrowse
             // 
             this.btnBrowse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnBrowse.Location = new System.Drawing.Point(389, 12);
+            this.btnBrowse.Location = new System.Drawing.Point(385, 12);
             this.btnBrowse.Name = "btnBrowse";
             this.btnBrowse.Size = new System.Drawing.Size(75, 23);
-            this.btnBrowse.TabIndex = 2;
+            this.btnBrowse.TabIndex = 1;
             this.btnBrowse.Text = "Browse";
             this.btnBrowse.UseVisualStyleBackColor = true;
             this.btnBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
             // 
-            // btnParse
+            // btnPlay
             // 
-            this.btnParse.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.btnPlay.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnParse.Location = new System.Drawing.Point(174, 40);
-            this.btnParse.Name = "btnParse";
-            this.btnParse.Size = new System.Drawing.Size(290, 23);
-            this.btnParse.TabIndex = 3;
-            this.btnParse.Text = "Parse";
-            this.btnParse.UseVisualStyleBackColor = true;
-            this.btnParse.Click += new System.EventHandler(this.btnParse_Click);
+            this.btnPlay.Location = new System.Drawing.Point(174, 40);
+            this.btnPlay.Name = "btnPlay";
+            this.btnPlay.Size = new System.Drawing.Size(286, 74);
+            this.btnPlay.TabIndex = 5;
+            this.btnPlay.Text = "Play";
+            this.btnPlay.UseVisualStyleBackColor = true;
+            this.btnPlay.Click += new System.EventHandler(this.btnPlay_Click);
             // 
             // rtbParse
             // 
             this.rtbParse.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.rtbParse.Location = new System.Drawing.Point(12, 69);
+            this.rtbParse.Location = new System.Drawing.Point(12, 120);
             this.rtbParse.Name = "rtbParse";
-            this.rtbParse.Size = new System.Drawing.Size(458, 351);
-            this.rtbParse.TabIndex = 4;
+            this.rtbParse.ReadOnly = true;
+            this.rtbParse.Size = new System.Drawing.Size(454, 299);
+            this.rtbParse.TabIndex = 6;
             this.rtbParse.Text = "";
             // 
             // tbSpeed
             // 
-            this.tbSpeed.Location = new System.Drawing.Point(47, 42);
+            this.tbSpeed.Location = new System.Drawing.Point(62, 42);
             this.tbSpeed.Name = "tbSpeed";
-            this.tbSpeed.Size = new System.Drawing.Size(121, 20);
-            this.tbSpeed.TabIndex = 5;
+            this.tbSpeed.Size = new System.Drawing.Size(106, 20);
+            this.tbSpeed.TabIndex = 2;
             this.tbSpeed.Text = "20";
             // 
             // label1
@@ -101,19 +107,72 @@ namespace MelodyImpact
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(12, 45);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(29, 13);
+            this.label1.Size = new System.Drawing.Size(38, 13);
             this.label1.TabIndex = 6;
-            this.label1.Text = "Step";
+            this.label1.Text = "Speed";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(12, 71);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(35, 13);
+            this.label2.TabIndex = 7;
+            this.label2.Text = "Offset";
+            // 
+            // tbOffset
+            // 
+            this.tbOffset.Location = new System.Drawing.Point(62, 68);
+            this.tbOffset.Name = "tbOffset";
+            this.tbOffset.Size = new System.Drawing.Size(106, 20);
+            this.tbOffset.TabIndex = 3;
+            this.tbOffset.Text = "0";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(12, 97);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(35, 13);
+            this.label3.TabIndex = 10;
+            this.label3.Text = "Track";
+            // 
+            // tbTrack
+            // 
+            this.tbTrack.Enabled = false;
+            this.tbTrack.Location = new System.Drawing.Point(62, 94);
+            this.tbTrack.Name = "tbTrack";
+            this.tbTrack.Size = new System.Drawing.Size(63, 20);
+            this.tbTrack.TabIndex = 4;
+            this.tbTrack.Text = "0";
+            // 
+            // cbAllTrack
+            // 
+            this.cbAllTrack.AutoSize = true;
+            this.cbAllTrack.Checked = true;
+            this.cbAllTrack.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbAllTrack.Location = new System.Drawing.Point(131, 96);
+            this.cbAllTrack.Name = "cbAllTrack";
+            this.cbAllTrack.Size = new System.Drawing.Size(37, 17);
+            this.cbAllTrack.TabIndex = 11;
+            this.cbAllTrack.Text = "All";
+            this.cbAllTrack.UseVisualStyleBackColor = true;
+            this.cbAllTrack.CheckedChanged += new System.EventHandler(this.cbAllTrack_CheckedChanged);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(482, 432);
+            this.ClientSize = new System.Drawing.Size(478, 431);
+            this.Controls.Add(this.cbAllTrack);
+            this.Controls.Add(this.tbTrack);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.tbOffset);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.tbSpeed);
             this.Controls.Add(this.rtbParse);
-            this.Controls.Add(this.btnParse);
+            this.Controls.Add(this.btnPlay);
             this.Controls.Add(this.btnBrowse);
             this.Controls.Add(this.tbFile);
             this.Name = "Form1";
@@ -129,10 +188,15 @@ namespace MelodyImpact
         private System.Windows.Forms.TextBox tbFile;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.Button btnBrowse;
-        private System.Windows.Forms.Button btnParse;
+        private System.Windows.Forms.Button btnPlay;
         private System.Windows.Forms.RichTextBox rtbParse;
         private System.Windows.Forms.TextBox tbSpeed;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox tbOffset;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox tbTrack;
+        private System.Windows.Forms.CheckBox cbAllTrack;
     }
 }
 

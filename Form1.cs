@@ -67,86 +67,92 @@ namespace MelodyImpact
             if (trackIndex >= midi.TracksCount && !allTracks) return;
 
             btnPlay.Enabled = false;
-            await PlayMelody(midi, handle, delay, allTracks, trackIndex, noteOffset);
+            await Task.Run(async () =>
+            {
+                SetForegroundWindow(handle);
+                await Task.Delay(100);
+
+                int currentTick = 0;
+                int[] eventIdxs = new int[midi.TracksCount];
+
+                int ticksPerQuarterNote = midi.TicksPerQuarterNote;
+                while (eventIdxs.Max() != -1)
+                {
+                    //if (handle != GetForegroundWindow()) return;
+
+                    Stopwatch watch = Stopwatch.StartNew();
+
+                    List<MidiNote> notes = new List<MidiNote>();
+                    foreach (MidiTrack track in midi.Tracks)
+                    {
+                        if (!allTracks && track.Index != trackIndex)
+                        {
+                            eventIdxs[track.Index] = -1;
+                            continue;
+                        }
+
+                        while (true)
+                        {
+                            if (eventIdxs[track.Index] == -1 || eventIdxs[track.Index] >= track.MidiEvents.Count)
+                            {
+                                eventIdxs[track.Index] = -1;
+                                break;
+                            }
+
+                            MidiEvent evt = track.MidiEvents[eventIdxs[track.Index]];
+                            if (evt.Time == currentTick && evt.MidiEventType == MidiEventType.NoteOn)
+                            {
+                                notes.Add(new MidiNote(evt.Note + noteOffset));
+                            }
+                            else if (evt.Time > currentTick)
+                            {
+                                break;
+                            }
+                            eventIdxs[track.Index]++;
+                        }
+                    }
+
+                    string keys = string.Join("", notes.Select(x => x.GenshinKey));
+                    if (!string.IsNullOrEmpty(keys))
+                    {
+                        try
+                        {
+                            //Task.Run(() => SendKeys.SendWait(keys));
+                        }
+                        catch (Exception)
+                        {
+                            // nothing
+                        }
+                    }
+
+                    watch.Stop();
+
+                    if (!string.IsNullOrEmpty(keys))
+                    {
+                        Invoke(new Action(() =>
+                        {
+                            rtbParse.AppendText(
+                                string.Join(" ", notes.Select(x => x.NoteName)).PadLeft(20) +
+                                " | " +
+                                keys.PadLeft(8) +
+                                " | " +
+                                (watch.ElapsedMilliseconds + "ms").PadLeft(5) +
+                                "\n"
+                            );
+                            rtbParse.ScrollToCaret();
+                        }));
+                    }
+
+                    await Task.Delay(Math.Max(delay - (int)watch.ElapsedMilliseconds, 0));
+                    currentTick += ticksPerQuarterNote / 4;
+                }
+            });
             btnPlay.Enabled = true;
         }
 
         private void cbAllTrack_CheckedChanged(object sender, EventArgs e)
         {
             tbTrack.Enabled = !cbAllTrack.Checked;
-        }
-
-        private async Task PlayMelody(MidiFile midi, IntPtr handle, int delay, bool allTracks, int trackIndex, int noteOffset)
-        {
-            SetForegroundWindow(handle);
-            await Task.Delay(100);
-
-            int currentTick = 0;
-            int[] eventIdxs = new int[midi.TracksCount];
-
-            int ticksPerQuarterNote = midi.TicksPerQuarterNote;
-            while (true)
-            {
-                if (handle != GetForegroundWindow()) return;
-
-                Stopwatch watch = Stopwatch.StartNew();
-
-                List<MidiNote> notes = new List<MidiNote>();
-                foreach (MidiTrack track in midi.Tracks)
-                {
-                    if (!allTracks && track.Index != trackIndex) continue;
-
-                    while (true)
-                    {
-                        if (eventIdxs[track.Index] >= track.MidiEvents.Count) break;
-
-                        MidiEvent evt = track.MidiEvents[eventIdxs[track.Index]];
-                        if (evt.Time == currentTick && evt.MidiEventType == MidiEventType.NoteOn)
-                        {
-                            notes.Add(new MidiNote(evt.Note + noteOffset));
-                        }
-                        else if (evt.Time > currentTick)
-                        {
-                            break;
-                        }
-                        eventIdxs[track.Index]++;
-                    }
-                }
-
-                string keys = string.Join("", notes.Select(x => x.GenshinKey));
-                if (!string.IsNullOrEmpty(keys))
-                {
-                    try
-                    {
-                        Task.Run(() => SendKeys.SendWait(keys));
-                    }
-                    catch (Exception)
-                    {
-                        // nothing
-                    }
-                }
-
-                watch.Stop();
-
-                if (!string.IsNullOrEmpty(keys))
-                {
-                    Invoke(new Action(() =>
-                    {
-                        rtbParse.AppendText(
-                            string.Join(" ", notes.Select(x => x.NoteName)).PadLeft(20) +
-                            " | " +
-                            keys.PadLeft(8) +
-                            " | " +
-                            (watch.ElapsedMilliseconds + "ms").PadLeft(5) +
-                            "\n"
-                        );
-                        rtbParse.ScrollToCaret();
-                    }));
-                }
-
-                await Task.Delay(Math.Max(delay - (int)watch.ElapsedMilliseconds, 0));
-                currentTick += ticksPerQuarterNote / 4;
-            }
         }
     }
 }
